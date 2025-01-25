@@ -87,7 +87,7 @@ export default function Register() {
 
             <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
                 <form
-                    className="w-max shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-6 py-12"
+                    className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-6 py-12"
                     onSubmit={handleRegister}
                 >
                     <div>
@@ -100,7 +100,7 @@ export default function Register() {
                             placeholder="abc@example.com"
                             id="email"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -116,7 +116,7 @@ export default function Register() {
                             placeholder="abc@example.com"
                             id="appe"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={appE}
                             onChange={(e) => setAppE(e.target.value)}
                         />
@@ -132,7 +132,7 @@ export default function Register() {
                             placeholder="abc def ghi jkl"
                             id="name"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={appP}
                             onChange={(e) => setAppP(e.target.value)}
                         />
@@ -151,7 +151,7 @@ export default function Register() {
                             placeholder="Password"
                             id="password"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -165,7 +165,7 @@ export default function Register() {
                             className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`}
                         />
                         <p
-                            className={`text-red-500 max-w-[300px] mx-auto text-center ${isError ? "block" : "hidden"
+                            className={`text-red-500 max-w-full mx-auto text-center ${isError ? "block" : "hidden"
                                 } mt-4`}
                         >
                             {errMessage}

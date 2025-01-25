@@ -10,11 +10,63 @@ export default function Send() {
     const [senderMail, setSenderMail] = useState("");
     const [senderPwd, setSenderPwd] = useState("");
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [isError, setError] = useState(false);
+    const [message, setMessage] = useState("");
+    const [isM, setM] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = function (e) {
+    const handleSubmit = async function (e) {
         e.preventDefault();
-        console.log(body)
+        if (loading) return;
+        if (senderMail && senderPwd && link && subject && body) {
+            setLoading(true);
+            setError(false);
+            setM(false);
+            try {
+                const res = await fetch("https://big-scrape.onrender.com/send-email", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        url: link,
+                        body,
+                        subject,
+                        sender: senderMail,
+                        auth: senderPwd
+                    }),
+                });
+
+                const text = await res.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (error) {
+                    setMessage("An unexpected error occured. Try again.");
+                    console.error(error);
+                    return;
+                }
+
+                if (res.ok) {
+                    reset();
+                    setM(true)
+                    setMessage(`${data.message} to ${data.to}`);
+                } else setMessage(`Error: ${data.error}`)
+
+            } catch (err) {
+                console.error(err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        } else alert("Fill all fields")
+    }
+
+    const reset = function () {
+        setLink("");
+        setBody("");
+        setSubject("");
     }
 
     useEffect(() => {
@@ -84,7 +136,7 @@ export default function Send() {
             </Link>
             <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
                 <form
-                    className="w-max shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12"
+                    className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12"
                     onSubmit={handleSubmit}
                 >
                     <div>
@@ -97,7 +149,7 @@ export default function Send() {
                             placeholder="https://play.com/appname"
                             id="link"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
                         />
@@ -116,7 +168,7 @@ export default function Send() {
                             placeholder="Subject"
                             id="subject"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={subject}
                             onChange={(e) => setSubject(e.target.value)}
                         />
@@ -134,17 +186,20 @@ export default function Send() {
                             placeholder="body"
                             id="body"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500 h-36"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500 h-36"
                             value={body}
                             onChange={(e) => setBody(e.target.value)}
                         > </textarea>
                     </div>
 
                     <div>
+                        <p className={`${!loading && 'hidden'}`}>Loading...</p>
+                        <p className={`${!isError && 'hidden'}`}>An error occured</p>
+                        <p className={`${!isM && 'hidden'} max-w-full`}>{message}</p>
                         <input
                             type="submit"
                             value="Send mail"
-                            className="cursor-pointer block w-full bg-neutral-500 text-white mt-6 py-2"
+                            className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`}
                         />
                     </div>
                 </form>

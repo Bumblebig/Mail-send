@@ -136,30 +136,30 @@ export default function Test() {
                 Don&apos;t want to test? click to send to dev
             </Link>
 
-            <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
-                <form className="w-max shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12" onSubmit={handleSubmit}>
+            <div className="lg:flex lg:items-center lg:justify-center lg:h-auto lg:w-full">
+                <form className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="mail" className="text-lg mb-3 block text-gray-950">
                             Receiver Mail:
                         </label>
-                        <input type="text" name="mail" placeholder="abc@example.com" id="mail" required className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500" value={mail} onChange={(e) => setMail(e.target.value)} />
+                        <input type="text" name="mail" placeholder="abc@example.com" id="mail" required className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500" value={mail} onChange={(e) => setMail(e.target.value)} />
                     </div>
 
                     <div>
                         <label htmlFor="subject" className="text-lg mb-3 block text-gray-950">Subject:</label>
-                        <input type="text" name="subject" placeholder="Subject" id="subject" required className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                        <input type="text" name="subject" placeholder="Subject" id="subject" required className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500" value={subject} onChange={(e) => setSubject(e.target.value)} />
                     </div>
 
                     <div>
                         <label htmlFor="body" className="text-lg mb-3 block text-gray-950">Body:</label>
-                        <textarea name="body" placeholder="body" id="body" required className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500 h-36" value={body} onChange={(e) => setBody(e.target.value)}></textarea>
+                        <textarea name="body" placeholder="body" id="body" required className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500 h-36" value={body} onChange={(e) => setBody(e.target.value)}></textarea>
                     </div>
 
                     <div>
                         <p className={`${!loading && 'hidden'}`}>Loading...</p>
                         <p className={`${!isError && 'hidden'}`}>An error occured</p>
-                        <p className={`${!isM && 'hidden'}`}>{message}</p>
-                        <input type="submit" value="Send mail" className="cursor-pointer block w-full bg-neutral-500 text-white mt-6 py-2" />
+                        <p className={`${!isM && 'hidden'} w-full`}>{message}</p>
+                        <input type="submit" value="Send mail" className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`} />
                     </div>
                 </form>
             </div>

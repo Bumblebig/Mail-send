@@ -54,7 +54,7 @@ export default function Login() {
 
             <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
                 <form
-                    className="w-max shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-6 py-12"
+                    className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-6 py-12"
                     onSubmit={handleSubmit}
                 >
                     <div>
@@ -67,7 +67,7 @@ export default function Login() {
                             placeholder="abc@example.com"
                             id="email"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -86,7 +86,7 @@ export default function Login() {
                             placeholder="Password"
                             id="password"
                             required
-                            className="block border-b border-neutral-500 outline-none w-[300px] py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
+                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
