@@ -134,7 +134,7 @@ export default function Send() {
             <Link to="/custom-mail" className="mb-8 mt-[160px] text-center w-[80%] lg:hidden cursor-pointer underline">
                 Don&apos;t want to send to the dev? click to send custom test mail
             </Link>
-            <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
+            <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full w-[95%]">
                 <form
                     className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12"
                     onSubmit={handleSubmit}

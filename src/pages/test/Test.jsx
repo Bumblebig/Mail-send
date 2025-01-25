@@ -136,7 +136,7 @@ export default function Test() {
                 Don&apos;t want to test? click to send to dev
             </Link>
 
-            <div className="lg:flex lg:items-center lg:justify-center lg:h-auto lg:w-full">
+            <div className="lg:flex lg:items-center lg:justify-center lg:h-auto lg:w-full w-[95%]">
                 <form className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-12 py-12" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="mail" className="text-lg mb-3 block text-gray-950">

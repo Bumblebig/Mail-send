@@ -25,7 +25,7 @@ export default function Login() {
             setIsError(false);
             reset();
             console.log("success");
-            navigate("/custom-mail", { replace: true });
+            navigate("/send-dev", { replace: true });
 
         } catch (error) {
             setIsError(true);
@@ -52,7 +52,7 @@ export default function Login() {
                 </div>
             </div>
 
-            <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full">
+            <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full w-[95%]">
                 <form
                     className="w-full max-w-[500px] shadow-xl bg-gray-50 p-8 rounded flex flex-col gap-6 py-12"
                     onSubmit={handleSubmit}
