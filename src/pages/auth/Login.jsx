@@ -1,22 +1,41 @@
 import { useState } from "react"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const [isError, setIsError] = useState(false);
-    // const [errMessage, setErrMessage] = useState("");
+    const [isError, setIsError] = useState(false);
+    const [errMessage, setErrMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const reset = () => {
         setEmail("");
         setPassword("");
     };
 
-    const handleSubmit = function (e) {
+    const handleSubmit = async function (e) {
         e.preventDefault();
-        console.log(email, password);
-        window.location.href = "/custom-mail";
-        reset();
+        if (loading) return;
+        try {
+            setLoading(true);
+            await signInWithEmailAndPassword(auth, email, password);
+            setIsError(false);
+            reset();
+            console.log("success");
+            navigate("/custom-mail", { replace: true });
+
+        } catch (error) {
+            setIsError(true);
+            setErrMessage("Invalid email or password");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     }
+
     return (
         <section className="w-full h-screen bg-white flex items-center justify-center lg:justify-start">
             <div className="bg-neutral-500 hidden text-white items-center justify-center h-screen lg:flex w-2/5 px-8">
@@ -74,17 +93,18 @@ export default function Login() {
                     </div>
 
                     <div>
+                        <p className={(!loading && "hidden")}>Loading...</p>
                         <input
                             type="submit"
                             value="Login"
-                            className="cursor-pointer block w-full bg-neutral-500 text-white mt-6 py-2"
+                            className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`}
                         />
-                        {/* <p
+                        <p
                             className={`text-red-500 text-center ${isError ? "block" : "hidden"
                                 } mt-4`}
                         >
                             {errMessage}
-                        </p> */}
+                        </p>
 
                         <p className="mt-8 text-center lg:hidden">
                             {" "} Don&apos;t have an account?{" "}

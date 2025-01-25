@@ -1,12 +1,30 @@
+import { createUserWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { setDoc, doc } from "firebase/firestore";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
     const [appP, setAppP] = useState("");
     const [appE, setAppE] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const [isError, setIsError] = useState(false);
-    // const [errMessage, setErrMessage] = useState("");
+    const [isError, setIsError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errMessage, setErrMessage] = useState("");
+    const navigate = useNavigate();
+
+    const getFirebaseErrorMessage = (code) => {
+        switch (code) {
+            case AuthErrorCodes.EMAIL_EXISTS:
+                return "The email address is already in use by another account.";
+            case AuthErrorCodes.INVALID_EMAIL:
+                return "The email address is not valid.";
+            case AuthErrorCodes.WEAK_PASSWORD:
+                return "The password is too weak. Please enter a stronger password.";
+            default:
+                return "An unknown error occurred. Please try again.";
+        }
+    };
 
     const reset = () => {
         setAppP("");
@@ -15,12 +33,42 @@ export default function Register() {
         setPassword("");
     };
 
-    const handleRegister = function (e) {
+    const handleRegister = async function (e) {
         e.preventDefault();
-        console.log("register");
-        reset();
-        window.location.href = "/custom-mail";
+        if (loading) return;
+        try {
+            setLoading(true);
+            await createUserWithEmailAndPassword(auth, email, password);
+            const user = auth.currentUser;
+
+            if (user) {
+                await setDoc(doc(db, "Users", user.uid), {
+                    sendmail: appE,
+                    sendpwd: appP,
+                });
+            }
+
+            setIsError(false);
+            reset();
+            navigate("/custom-mail", { replace: true });
+        } catch (error) {
+            if ((error).code) {
+                const errorMessage = getFirebaseErrorMessage(
+                    (error).code
+                );
+                console.log(errorMessage);
+                setIsError(true);
+                setErrMessage(errorMessage);
+            } else {
+                console.log("An unknown error occurred");
+                setIsError(true);
+                setErrMessage("An unknown error occurred. Please try again.");
+            }
+        } finally {
+            setLoading(false);
+        }
     }
+
     return (
         <section className="w-full h-screen bg-white flex items-center justify-center lg:justify-start">
             <div className="bg-neutral-500 hidden text-white items-center justify-center h-screen lg:flex w-2/5 px-8">
@@ -110,17 +158,18 @@ export default function Register() {
                     </div>
 
                     <div>
+                        <p className={(!loading && "hidden")}>Loading...</p>
                         <input
                             type="submit"
                             value="Register"
-                            className="cursor-pointer block w-full bg-neutral-500 text-white mt-6 py-2"
+                            className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`}
                         />
-                        {/* <p
+                        <p
                             className={`text-red-500 max-w-[300px] mx-auto text-center ${isError ? "block" : "hidden"
                                 } mt-4`}
                         >
                             {errMessage}
-                        </p> */}
+                        </p>
                         <p className="mt-8 text-center lg:hidden">
                             {" "}Already have an account?{" "}
                             <Link to="/login" className="underline cursor-pointer">
