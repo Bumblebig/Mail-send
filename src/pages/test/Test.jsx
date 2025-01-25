@@ -10,6 +10,10 @@ export default function Test() {
     const [senderMail, setSenderMail] = useState("");
     const [senderPwd, setSenderPwd] = useState("");
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [isError, setError] = useState(false);
+    const [message, setMessage] = useState("");
+    const [isM, setM] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,6 +49,12 @@ export default function Test() {
         getUserData();
     }, [user]);
 
+    const reset = function () {
+        setMail("");
+        setBody("");
+        setSubject("");
+    }
+
     const logout = async () => {
         try {
             await auth.signOut();
@@ -54,9 +64,51 @@ export default function Test() {
         }
     };
 
-    const handleSubmit = function (e) {
+    const handleSubmit = async function (e) {
         e.preventDefault();
-        console.log(body)
+        if (loading) return;
+        if (senderMail && senderPwd && mail && subject && body) {
+            setLoading(true);
+            setError(false);
+            setM(false);
+            try {
+                const res = await fetch("https://big-scrape.onrender.com/send-email-test", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: mail,
+                        body,
+                        subject,
+                        sender: senderMail,
+                        auth: senderPwd
+                    }),
+                });
+
+                const text = await res.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (error) {
+                    setMessage("An unexpected error occured. Try again.");
+                    console.error(error);
+                    return;
+                }
+
+                if (res.ok) {
+                    reset();
+                    setM(true)
+                    setMessage(`${data.message} to ${data.to}`);
+                } else setMessage(`Error: ${data.error}`)
+
+            } catch (err) {
+                console.error(err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        } else alert("Fill all fields")
     }
 
     return (
@@ -104,6 +156,9 @@ export default function Test() {
                     </div>
 
                     <div>
+                        <p className={`${!loading && 'hidden'}`}>Loading...</p>
+                        <p className={`${!isError && 'hidden'}`}>An error occured</p>
+                        <p className={`${!isM && 'hidden'}`}>{message}</p>
                         <input type="submit" value="Send mail" className="cursor-pointer block w-full bg-neutral-500 text-white mt-6 py-2" />
                     </div>
                 </form>

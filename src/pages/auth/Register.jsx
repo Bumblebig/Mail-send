@@ -158,7 +158,7 @@ export default function Register() {
                     </div>
 
                     <div>
-                        <p className={(!loading && "hidden")}>Loading...</p>
+                        <p className={`${!loading && "hidden"}`}>Loading...</p>
                         <input
                             type="submit"
                             value="Register"
