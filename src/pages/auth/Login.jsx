@@ -19,21 +19,23 @@ export default function Login() {
     const handleSubmit = async function (e) {
         e.preventDefault();
         if (loading) return;
-        try {
-            setLoading(true);
-            await signInWithEmailAndPassword(auth, email, password);
-            setIsError(false);
-            reset();
-            console.log("success");
-            navigate("/send-dev", { replace: true });
+        if (email && password) {
+            try {
+                setLoading(true);
+                await signInWithEmailAndPassword(auth, email, password);
+                setIsError(false);
+                reset();
+                console.log("success");
+                navigate("/send-dev", { replace: true });
 
-        } catch (error) {
-            setIsError(true);
-            setErrMessage("Invalid email or password");
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
+            } catch (error) {
+                setIsError(true);
+                setErrMessage("Invalid email or password");
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        } else alert("Please fill in all fields");
     }
 
     return (

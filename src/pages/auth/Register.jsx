@@ -36,36 +36,40 @@ export default function Register() {
     const handleRegister = async function (e) {
         e.preventDefault();
         if (loading) return;
-        try {
-            setLoading(true);
-            await createUserWithEmailAndPassword(auth, email, password);
-            const user = auth.currentUser;
+        if (appP && appE && email && password) {
+            try {
+                setLoading(true);
+                await createUserWithEmailAndPassword(auth, email, password);
+                const user = auth.currentUser;
 
-            if (user) {
-                await setDoc(doc(db, "Users", user.uid), {
-                    sendmail: appE,
-                    sendpwd: appP,
-                });
-            }
+                if (user) {
+                    await setDoc(doc(db, "Users", user.uid), {
+                        sendmail: appE,
+                        sendpwd: appP,
+                    });
+                }
 
-            setIsError(false);
-            reset();
-            navigate("/send-dev", { replace: true });
-        } catch (error) {
-            if ((error).code) {
-                const errorMessage = getFirebaseErrorMessage(
-                    (error).code
-                );
-                console.log(errorMessage);
-                setIsError(true);
-                setErrMessage(errorMessage);
-            } else {
-                console.log("An unknown error occurred");
-                setIsError(true);
-                setErrMessage("An unknown error occurred. Please try again.");
+                setIsError(false);
+                reset();
+                navigate("/send-dev", { replace: true });
+            } catch (error) {
+                if ((error).code) {
+                    const errorMessage = getFirebaseErrorMessage(
+                        (error).code
+                    );
+                    console.log(errorMessage);
+                    setIsError(true);
+                    setErrMessage(errorMessage);
+                } else {
+                    console.log("An unknown error occurred");
+                    setIsError(true);
+                    setErrMessage("An unknown error occurred. Please try again.");
+                }
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
+        } else {
+            alert("Fill all fields");
         }
     }
 
