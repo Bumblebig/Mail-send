@@ -39,6 +39,7 @@ export default function Register() {
         if (appP && appE && email && password) {
             try {
                 setLoading(true);
+                setIsError(false);
                 await createUserWithEmailAndPassword(auth, email, password);
                 const user = auth.currentUser;
 
@@ -49,7 +50,7 @@ export default function Register() {
                     });
                 }
 
-                setIsError(false);
+
                 reset();
                 navigate("/send-dev", { replace: true });
             } catch (error) {

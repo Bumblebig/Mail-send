@@ -1,41 +1,32 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase";
 
-export default function Login() {
+export default function Reset() {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [isError, setIsError] = useState(false);
     const [errMessage, setErrMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
-    const reset = () => {
-        setEmail("");
-        setPassword("");
-    };
 
     const handleSubmit = async function (e) {
         e.preventDefault();
         if (loading) return;
-        if (email && password) {
+        if (email) {
             try {
                 setLoading(true);
                 setIsError(false);
-                await signInWithEmailAndPassword(auth, email, password);
-                reset();
-                console.log("success");
-                navigate("/send-dev", { replace: true });
+                await sendPasswordResetEmail(auth, email);
+                alert("Email sent!\nPlease check your inbox to reset your password.");
 
             } catch (error) {
                 setIsError(true);
-                setErrMessage("Invalid email or password");
+                setErrMessage("Something went wrong, please try again!");
                 console.error(error);
             } finally {
                 setLoading(false);
             }
-        } else alert("Please fill in all fields");
+        } else alert("Please enter your login email");
     }
 
     return (
@@ -43,12 +34,11 @@ export default function Login() {
             <div className="bg-neutral-500 hidden text-white items-center justify-center h-screen lg:flex w-2/5 px-8">
                 <div>
                     <h1 className="font-bold text-5xl leading-tight">
-                        Login to get started!
+                        Reset your Password
                     </h1>
                     <p className="mt-4 block">
-                        Don&apos;t have an account?{" "}
-                        <Link to="/register" className="underline cursor-pointer">
-                            register
+                        <Link to="/login" className="underline cursor-pointer">
+                            Return to Login
                         </Link>
                     </p>
                 </div>
@@ -61,7 +51,7 @@ export default function Login() {
                 >
                     <div>
                         <label htmlFor="email" className="text-lg mb-3 block text-gray-950">
-                            Email:
+                            Enter your email:
                         </label>
                         <input
                             type="email"
@@ -75,30 +65,12 @@ export default function Login() {
                         />
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="text-lg mb-3 block text-gray-950"
-                        >
-                            Password:
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            id="password"
-                            required
-                            className="block border-b border-neutral-500 outline-none w-full py-2 px-4 bg-gray-50 focus:border-b-4 text-neutral-500"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
 
                     <div>
                         <p className={`${!loading && "hidden"}`}>Loading...</p>
                         <input
                             type="submit"
-                            value="Login"
+                            value="Reset Password"
                             className={`${loading ? "cursor-not-allowed bg-neutral-300" : "cursor-pointer bg-neutral-500"} block w-full text-white mt-6 py-2`}
                         />
                         <p
@@ -109,16 +81,8 @@ export default function Login() {
                         </p>
 
                         <p className="mt-8 text-center lg:hidden">
-                            {" "} Don&apos;t have an account?{" "}
-                            <Link to="/register" className="underline cursor-pointer">
-                                register
-                            </Link>
-                        </p>
-
-                        <p className="mt-8 text-center">
-                            {" "} Forgot Password?{" "}
-                            <Link to="/reset" className="underline cursor-pointer">
-                                reset
+                            <Link to="/login" className="underline cursor-pointer">
+                                Return to Login
                             </Link>
                         </p>
                     </div>
