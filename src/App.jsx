@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Login, Register, Send, Test, Reset } from "./pages";
+import { Login, Register, Send, Test, Reset, Change } from "./pages";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { auth } from "./firebase";
 
@@ -42,6 +42,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Test />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/change"
+          element={
+            <ProtectedRoute>
+              <Change />
             </ProtectedRoute>
           }
         />

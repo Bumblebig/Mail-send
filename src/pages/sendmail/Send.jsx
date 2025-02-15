@@ -127,12 +127,18 @@ export default function Send() {
                     <Link to="/custom-mail" className="mt-4 block underline">
                         Don&apos;t want to send to the dev? click to send custom test mail
                     </Link>
+                    <Link to="/change" className="mt-4 block underline">
+                        Click to change sending credentials
+                    </Link>
                 </div>
                 <p className="cursor-pointer absolute top-5 right-5" onClick={logout}>Logout</p>
             </div>
 
             <Link to="/custom-mail" className="mb-8 mt-[160px] text-center w-[80%] lg:hidden cursor-pointer underline">
                 Don&apos;t want to send to the dev? click to send custom test mail
+            </Link>
+            <Link to="/change" className="mb-8 text-center w-[80%] lg:hidden cursor-pointer underline">
+                Click to change sending credentials
             </Link>
             <div className="lg:flex lg:items-center lg:justify-center lg:h-screen lg:w-full w-[95%]">
                 <form

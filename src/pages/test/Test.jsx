@@ -128,12 +128,18 @@ export default function Test() {
                     <Link to="/send-dev" className="mt-4 block cursor-pointer underline">
                         Don&apos;t want to test? click to send to dev{" "}
                     </Link>
+                    <Link to="/change" className="mt-4 block underline">
+                        Click to change sending credentials
+                    </Link>
                 </div>
                 <p className="cursor-pointer absolute top-5 right-5" onClick={logout}>Logout</p>
             </div>
 
             <Link to="/send-dev" className="mb-8 mt-[160px] text-center w-[80%] cursor-pointer lg:hidden underline">
                 Don&apos;t want to test? click to send to dev
+            </Link>
+            <Link to="/change" className="mb-8 text-center w-[80%] lg:hidden cursor-pointer underline">
+                Click to change sending credentials
             </Link>
 
             <div className="lg:flex lg:items-center lg:justify-center lg:h-auto lg:w-full w-[95%]">
